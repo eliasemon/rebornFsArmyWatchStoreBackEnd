@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "all_products",
+  "info": {
+    "singularName": "all-product",
+    "pluralName": "all-products",
+    "displayName": "allProducts",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "productCode": {
+      "type": "uid",
+      "required": true
+    },
+    "productName": {
+      "type": "string",
+      "required": true
+    },
+    "brand": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::brand.brand"
+    },
+    "productImage": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "warrenty": {
+      "type": "integer",
+      "default": 0
+    },
+    "youtubeReviewLInkSingle": {
+      "type": "string"
+    },
+    "catagories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::catagory.catagory"
+    },
+    "sub_catagories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::sub-catagory.sub-catagory"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "defualtPrice": {
+      "type": "decimal"
+    },
+    "variants": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product-variants.all-products"
+    }
+  }
+}

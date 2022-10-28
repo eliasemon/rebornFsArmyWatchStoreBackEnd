@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sub_catagories",
+  "info": {
+    "singularName": "sub-catagory",
+    "pluralName": "sub-catagories",
+    "displayName": "subCatagory",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "subCatagoryID": {
+      "type": "uid"
+    },
+    "catagories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::catagory.catagory",
+      "inversedBy": "sub_catagories"
+    }
+  }
+}

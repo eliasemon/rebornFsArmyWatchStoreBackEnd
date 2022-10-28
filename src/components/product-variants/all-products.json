@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_product_variants_all_products",
+  "info": {
+    "displayName": "variantOfProduct",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "color": {
+      "type": "string"
+    },
+    "ImageOfVariant": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "variantPrice": {
+      "type": "decimal",
+      "required": true,
+      "default": 200
+    },
+    "variantCode": {
+      "type": "string",
+      "required": true
+    },
+    "InStock": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    }
+  }
+}

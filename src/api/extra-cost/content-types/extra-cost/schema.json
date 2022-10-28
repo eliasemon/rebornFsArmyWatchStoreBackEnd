@@ -1,0 +1,27 @@
+{
+  "kind": "singleType",
+  "collectionName": "extra_costs",
+  "info": {
+    "singularName": "extra-cost",
+    "pluralName": "extra-costs",
+    "displayName": "extraCost",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "shipingCost": {
+      "type": "decimal",
+      "required": true,
+      "default": 20
+    },
+    "vat": {
+      "type": "decimal",
+      "max": 100,
+      "default": 5,
+      "required": true
+    }
+  }
+}
