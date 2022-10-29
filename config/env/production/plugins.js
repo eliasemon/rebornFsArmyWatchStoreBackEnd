@@ -1,4 +1,4 @@
-module.exports =({ env }) ({  
+module.exports = {
   graphql: {
     config: {
       endpoint: "/graphql",
@@ -9,18 +9,22 @@ module.exports =({ env }) ({
       apolloServer: { tracing: false, introspection: true },
     },
   },
-  upload: {
-    config: {
-      provider: 'cloudinary',
-      providerOptions: {
-        cloud_name: env('CLOUDINARY_NAME'),
-        api_key: env('CLOUDINARY_KEY'),
-        api_secret: env('CLOUDINARY_SECRET'),
-      },
-      actionOptions: {
-        upload: {},
-        delete: {},
+};
+module.exports = ({ env }) => ({
+    // ...
+    upload: {
+      config: {
+        provider: 'cloudinary',
+        providerOptions: {
+          cloud_name: env('CLOUDINARY_NAME'),
+          api_key: env('CLOUDINARY_KEY'),
+          api_secret: env('CLOUDINARY_SECRET'),
+        },
+        actionOptions: {
+          upload: {},
+          delete: {},
+        },
       },
     },
-  },
-});
+    // ...
+  });
