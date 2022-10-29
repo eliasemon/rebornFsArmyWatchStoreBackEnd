@@ -31,21 +31,20 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
             populate: { variants: true },
           }
         );
-        
         if(item.variantsId != -1){
           const entity = rawEntity.variants.find((v) => v.id == item.variantsId);
-          item.unitPrice = entity.variantPrice;
-          item.variantCode = entity.variantCode;
-          item.variantColor = entity.color;
+          item.unitPrice = entity?.variantPrice;
+          item.variantCode = entity?.variantCode;
+          item.variantColor = entity?.color;
         }else{
-          item.unitPrice = rawEntity.defualtPrice;
+          item.unitPrice = rawEntity?.defualtPrice;
           item.variantColor = "defualt";
           item.variantCode = null;
         }
-        item.product_ref = rawEntity.id;
-        item.productCode =  rawEntity.productCode;
-        item.productName = rawEntity.productName;
-        item.productId = rawEntity.id;
+        item.product_ref = rawEntity?.id;
+        item.productCode =  rawEntity?.productCode;
+        item.productName = rawEntity?.productName;
+        item.productId = rawEntity?.id;
         item.product_quantity =
           item.product_quantity && Number(item.product_quantity)
             ? item.product_quantity
@@ -72,10 +71,10 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
       const response = await super.create(ctx);
       const forRefineUseRef = response.data.attributes.user_ref.data
       const refinedUserRef = {
-         "id" : forRefineUseRef.id,
-         "username" : forRefineUseRef.attributes.username,
-         "email" : forRefineUseRef.attributes.email,
-         "phoneNumber": forRefineUseRef.attributes.phoneNumber
+         "id" : forRefineUseRef?.id,
+         "username" : forRefineUseRef?.attributes?.username,
+         "email" : forRefineUseRef?.attributes?.email,
+         "phoneNumber": forRefineUseRef?.attributes?.phoneNumber
       }
       response.data.attributes.user_ref = refinedUserRef
       return response
