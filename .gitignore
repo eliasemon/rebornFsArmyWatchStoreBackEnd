@@ -114,4 +114,5 @@ dist
 build
 .strapi-updater.json
 
+config/env/
 yarn.lock
