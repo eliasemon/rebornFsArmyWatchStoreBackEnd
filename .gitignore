@@ -93,6 +93,8 @@ pids
 logs
 results
 node_modules
+config/env/production/database.js
+config/database.js
 .node_history
 
 ############################
@@ -114,4 +116,7 @@ dist
 build
 .strapi-updater.json
 
+
 yarn.lock
+
+
