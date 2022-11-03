@@ -106,7 +106,7 @@ const respond = async (ctx, next) => {
     );
     ctx.response.body = {
       ...ctx.response.body,
-      data: normalize(ctx.response.body.data),
+      data: normalize(ctx?.response?.body?.data),
     };
     return;
   }
