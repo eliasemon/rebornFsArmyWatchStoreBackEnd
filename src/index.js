@@ -17,11 +17,12 @@ module.exports = {
         variantsId : Int
       }
       type orderItemReturn {
-        product_ref : Int,
-        variantsId : Int
+        isSuccesfull : Boolean
+        message : String
+        ordersInformation : OrderEntityResponse
       }
       type Mutation {
-        MakeOrder(ordersItem : [orderItemInput]): OrderEntityResponse
+        MakeOrder(ordersItem : [orderItemInput]): orderItemReturn 
       }
       
       `,
@@ -35,7 +36,16 @@ module.exports = {
               const params= {}
               params.data = JSON.parse(JSON.stringify(args))
               const resdata = await strapi.services["api::order.order"].create(params);
-              const response = toEntityResponse(resdata);
+              const gqlResponse = toEntityResponse(resdata);
+              const response = {}
+              response.ordersInformation = gqlResponse
+              if(resdata.error || !resdata.id || !resdata.id == null){
+                response.isSuccesfull = false
+                response.message = "Unsuccesful Create order attemp || Some Fields are missing"
+                return response;
+              }
+              response.message = "Order Created SuccessFully"
+              response.isSuccesfull = true
               return response;
             }
           }

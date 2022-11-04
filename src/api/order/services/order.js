@@ -15,7 +15,7 @@ module.exports = createCoreService('api::order.order', ({ strapi }) => ({
         const { data } = params;
         const { ordersItem } = data;
       //   || !data.delivaryAddress
-        if (!ordersItem && ordersItem.length == 0 ) {
+        if (!ordersItem || ordersItem.length == 0 ) {
           const error = new Error()
           error.status = 400
           error.message = "validation error . some fields are missing"
@@ -24,16 +24,21 @@ module.exports = createCoreService('api::order.order', ({ strapi }) => ({
               error
           };
         }
-        const forResolvedPromise = ordersItem.map(async (item) => {
+        const filteredorderItemsWithCalculation = await ordersItem.reduce(async ( acc , item) => { 
+          if(!item.product_ref){
+            return await acc
+          }
           const rawEntity = await strapi.entityService.findOne(
             "api::all-product.all-product",
-            item.product_ref || -1,
+            item.product_ref,
             {
               fields : ['productName',"productCode", 'id' , "defualtPrice" ],
               populate: { variants: true },
             }
           );
-            console.log("rawEntity--",rawEntity)
+          if(rawEntity == null){
+            return await acc
+          }
           let entity;
           if(item.variantsId != -1){
              entity = rawEntity.variants.find((v) => v.id == item.variantsId);
@@ -58,16 +63,20 @@ module.exports = createCoreService('api::order.order', ({ strapi }) => ({
               : 1;
           item.itemsTotalPrice = item.unitPrice * item.product_quantity;
           totalPrice = totalPrice + item.itemsTotalPrice;
-          return item;
-        });
-        
-        console.log(forResolvedPromise)
-
-        await Promise.all(forResolvedPromise).then((values) => {
-          data.ordersItem = values;
-          data["user_ref"] = ctx.state.user.id;
-          
-        });
+          // acc.push(item)
+          const acc2 = await acc;
+          return  [...acc2 , item]
+        },Promise.resolve([]));
+        if(filteredorderItemsWithCalculation.length == 0){
+            const error = new Error()
+            error.status = 400
+            error.message = "validation error . some fields are missing"
+            return {
+                data : null,
+                error
+            };
+        }
+        data.ordersItem = filteredorderItemsWithCalculation;
         const {shipingCost, vat} = await strapi.entityService.findMany('api::extra-cost.extra-cost')
         data.shipingCost = shipingCost;
         let totalVat = (totalPrice/100) * vat;
@@ -76,6 +85,7 @@ module.exports = createCoreService('api::order.order', ({ strapi }) => ({
         data["vatInPercentages"] = vat;
         data["totalVat"] = totalVat;
         data["totalPrice"] = totalPrice;
+        data["user_ref"] = ctx.state.user.id;
         params.data =  data
         params.populate = '*'
         const response = await super.create(params);
