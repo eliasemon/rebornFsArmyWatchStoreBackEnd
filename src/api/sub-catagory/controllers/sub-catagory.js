@@ -6,7 +6,10 @@
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
-module.exports = createCoreController('api::sub-catagory.sub-catagory');
+module.exports = createCoreController('api::sub-catagory.sub-catagory')
+
+
+
 // ,({strapi})=>({
 //     async find(ctx){
 //         try {
@@ -30,4 +33,4 @@ module.exports = createCoreController('api::sub-catagory.sub-catagory');
 //             ctx.body = error
 //         }
 //     }
-// })
+// });
