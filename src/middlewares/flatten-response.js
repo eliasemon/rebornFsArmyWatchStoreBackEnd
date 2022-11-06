@@ -8,7 +8,6 @@ const normalize = (data) => {
 
   const flatten = (data) => {
     if (!data.attributes) return data;
-
     return {
       id: data.id,
       ...data.attributes,
@@ -153,7 +152,7 @@ const respond = async (ctx, next) => {
     ctx.request.headers.normalize === "true"
   ) {
     const parsedBody = JSON.parse(ctx.response.body);
-
+    // console.log(JSON.stringify(parsedBody.data._.meta))
     if (parsedBody.data.__schema !== undefined) {
       return;
     }
@@ -161,11 +160,21 @@ const respond = async (ctx, next) => {
     console.log(
       `API request (${ctx.url}) detected, transforming response json...`
     );
-
+    const tempForMeta = Object.keys(parsedBody.data)
+    let temp = tempForMeta[0]
+    let meta;
+    if(parsedBody.data[temp].meta){
+      meta = parsedBody.data[temp].meta
+    }
+    console.log(JSON.stringify(meta))
     ctx.response.body = {
-      ...parsedBody.data,
-      data: normalize(parsedBody.data),
+      // ...parsedBody.data,
+      data:{
+        ...normalize(parsedBody.data),
+        meta : meta
+      } 
     };
+    // ctx.response.body.data["meta"] = meta
     return;
   }
 };

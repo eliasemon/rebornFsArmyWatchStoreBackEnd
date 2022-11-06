@@ -55,7 +55,8 @@
       "type": "richtext"
     },
     "defualtPrice": {
-      "type": "decimal"
+      "type": "decimal",
+      "required": true
     },
     "variants": {
       "type": "component",
