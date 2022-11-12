@@ -1,5 +1,4 @@
 'use strict';
-
 module.exports = {
   /**
    * An asynchronous register function that runs before
@@ -14,20 +13,73 @@ module.exports = {
       typeDefs: `
       input orderItemInput {
         product_ref : Int,
-        variantsId : Int
+        variantsId : Int,
+        product_quantity : Int
       }
+      input registerInputFiled{
+        username : String,
+        email : String,
+        password : String,
+        phoneNumber : String,
+        gender : String
+      }
+
       type orderItemReturn {
         isSuccesfull : Boolean
         message : String
         ordersInformation : OrderEntityResponse
       }
+
       type Mutation {
-        MakeOrder(ordersItem : [orderItemInput]): orderItemReturn 
+        MakeOrder(ordersItem : [orderItemInput]): orderItemReturn
+      }
+
+      type userEntity{
+        id:ID,
+        username : String,
+        email: String,
+        confirmed: Boolean,
+        blocked : Boolean,
+        createdAt: Date,
+        phoneNumber :String,
+        gender: String,
+        dataOfBirth : Date,                            
+      }
+      type registerResponseItem {
+        jwt : String
+        user : userEntity
+      }
+
+      type Mutation {
+        userReg(input : registerInputFiled) : registerResponseItem
       }
       
       `,
       resolvers: {
         Mutation : {
+          userReg : {
+            resolve : async (parent, args, context) =>{
+              const { toEntityResponse } = strapi.service(
+                "plugin::graphql.format"
+              ).returnTypes;
+              const params = JSON.parse(JSON.stringify(args))
+              params.input.confirmed = true;
+              params.input.role= 1
+              params.input.blocked =  false
+              params.input.jwt = true 
+              
+              let user = await strapi.service("plugin::users-permissions.user").add(params.input)
+              // let user = await strapi.services.profile.create(params.input)
+              
+              const usersJwt = await strapi.plugin('users-permissions').service('jwt').issue({ id : user.id });
+              const resdata = {
+                jwt : usersJwt,
+                user : {...user}
+              }
+              return resdata;
+            }
+          },
+
           MakeOrder : {
             resolve : async (parent, args, context) => {
               const { toEntityResponse } = strapi.service(
@@ -53,6 +105,9 @@ module.exports = {
       },
       resolversConfig: {
         "Mutation.MakeOrder": {
+          auth: false,
+        },
+        "Mutation.userReg": {
           auth: false,
         },
       },
