@@ -16,13 +16,7 @@ module.exports = {
         variantsId : Int,
         product_quantity : Int
       }
-      input registerInputFiled{
-        username : String,
-        email : String,
-        password : String,
-        phoneNumber : String,
-        gender : String
-      }
+      
 
       type orderItemReturn {
         isSuccesfull : Boolean
@@ -32,6 +26,28 @@ module.exports = {
 
       type Mutation {
         MakeOrder(ordersItem : [orderItemInput]): orderItemReturn
+      }
+
+
+
+
+
+      input AddressItem{
+        address : String,
+        streetAddress : String,
+        city : String,
+        state_Province_Region : String,
+        zipCode : Int,
+        country : String,
+      }
+
+      input registerInputFiled{
+        username : String,
+        email : String,
+        password : String,
+        phoneNumber : String,
+        gender : String,
+        addressLine : AddressItem
       }
 
       type userEntity{
@@ -48,6 +64,7 @@ module.exports = {
       type registerResponseItem {
         jwt : String
         user : userEntity
+        message : String
       }
 
       type Mutation {
@@ -66,15 +83,24 @@ module.exports = {
               params.input.confirmed = true;
               params.input.role= 1
               params.input.blocked =  false
-              params.input.jwt = true 
+              const Address = {}
+              Address.data = params.input?.addressLine
+              
               
               let user = await strapi.service("plugin::users-permissions.user").add(params.input)
-              // let user = await strapi.services.profile.create(params.input)
-              
               const usersJwt = await strapi.plugin('users-permissions').service('jwt').issue({ id : user.id });
               const resdata = {
                 jwt : usersJwt,
                 user : {...user}
+              }
+              try {
+                Address.data.user_ref = user.id
+                const ctx = strapi.requestContext.get();
+                ctx.request.header.authorization = `Bearer ${usersJwt}`;
+                await strapi.services["api::address.address"].create(Address);
+                resdata["message"] = "User Create Successfully With Address"
+              } catch (error) {
+                resdata["message"] = "User Create Successfully But Created Address attem failed "
               }
               return resdata;
             }
