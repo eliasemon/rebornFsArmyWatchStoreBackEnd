@@ -83,8 +83,7 @@ module.exports = {
               params.input.confirmed = true;
               params.input.role= 1
               params.input.blocked =  false
-              const Address = {}
-              Address.data = params.input?.addressLine
+              
               
               
               let user = await strapi.service("plugin::users-permissions.user").add(params.input)
@@ -94,6 +93,8 @@ module.exports = {
                 user : {...user}
               }
               try {
+                const Address = {}
+                Address.data = params.input?.addressLine
                 Address.data.user_ref = user.id
                 const ctx = strapi.requestContext.get();
                 ctx.request.header.authorization = `Bearer ${usersJwt}`;
