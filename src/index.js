@@ -37,7 +37,7 @@ module.exports = {
         streetAddress : String,
         city : String,
         state_Province_Region : String,
-        zipCode : Int,
+        zipCode : String,
         country : String,
       }
 

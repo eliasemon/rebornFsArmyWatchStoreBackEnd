@@ -34,10 +34,6 @@
       "type": "string",
       "required": true
     },
-    "zipCode": {
-      "type": "integer",
-      "required": true
-    },
     "country": {
       "type": "string"
     },
@@ -47,6 +43,10 @@
     },
     "tittle": {
       "type": "string"
+    },
+    "zipCode": {
+      "type": "string",
+      "required": true
     }
   }
 }
