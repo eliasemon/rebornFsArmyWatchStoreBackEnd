@@ -105,6 +105,7 @@ const respond = async (ctx, next) => {
     );
     ctx.response.body = {
       ...ctx.response.body,
+
       data: normalize(ctx?.response?.body?.data),
     };
     return;
@@ -152,7 +153,6 @@ const respond = async (ctx, next) => {
     ctx.request.headers.normalize === "true"
   ) {
     const parsedBody = JSON.parse(ctx.response.body);
-    // console.log(JSON.stringify(parsedBody.data._.meta))
     if (parsedBody.data.__schema !== undefined) {
       return;
     }
@@ -160,6 +160,7 @@ const respond = async (ctx, next) => {
     console.log(
       `API request (${ctx.url}) detected, transforming response json...`
     );
+
     const tempForMeta = Object.keys(parsedBody.data)
     let temp = tempForMeta[0]
     let meta;
@@ -175,6 +176,7 @@ const respond = async (ctx, next) => {
       } 
     };
     // ctx.response.body.data["meta"] = meta
+
     return;
   }
 };
