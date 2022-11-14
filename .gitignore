@@ -115,4 +115,5 @@ build
 .strapi-updater.json
 
 config/env/
+config/database.js
 yarn.lock

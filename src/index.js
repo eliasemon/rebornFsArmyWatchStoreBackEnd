@@ -82,6 +82,9 @@ module.exports = {
               ).returnTypes;
               const params = JSON.parse(JSON.stringify(args))
               params.input.confirmed = true;
+              params.input.provider =  'local'
+              params.input.created_by =  1
+              params.input.updated_by = 1 
               params.input.role= 1
               params.input.blocked =  false
               
@@ -89,6 +92,7 @@ module.exports = {
               
               let user = await strapi.service("plugin::users-permissions.user").add(params.input)
               const usersJwt = await strapi.plugin('users-permissions').service('jwt').issue({ id : user.id });
+                console.log(JSON.stringify(user))
               const resdata = {
                 jwt : usersJwt,
                 user : {...user}
