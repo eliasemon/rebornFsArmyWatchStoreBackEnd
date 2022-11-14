@@ -47,6 +47,14 @@
       "repeatable": true,
       "component": "order-card.items",
       "required": true
+    },
+    "paymentMethod": {
+      "type": "enumeration",
+      "enum": [
+        "cashon",
+        "onlineGetway"
+      ],
+      "default": "cashon"
     }
   }
 }

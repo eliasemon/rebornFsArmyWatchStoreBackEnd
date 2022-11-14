@@ -25,7 +25,7 @@ module.exports = {
       }
 
       type Mutation {
-        MakeOrder(ordersItem : [orderItemInput]): orderItemReturn
+        MakeOrder(ordersItem : [orderItemInput] , delivaryAddress : ID , paymentMethod : String): orderItemReturn
       }
 
 
