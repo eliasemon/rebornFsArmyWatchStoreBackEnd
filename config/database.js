@@ -19,7 +19,7 @@
 //       user: env('DATABASE_USERNAME', 'ClockStore'),
 //       password: env('DATABASE_PASSWORD', 'ClockStore'),
 //       ssl: { rejectUnauthorized: env.bool('DATABASE_SSL_SELF', false), },
-      
-//     },
-//   },
-// });
+//    },
+//  },
+//});
+

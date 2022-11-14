@@ -116,6 +116,7 @@ build
 
 
 config/env/
+config/database.js
 yarn.lock
 
 
