@@ -39,6 +39,7 @@ module.exports = {
         state_Province_Region : String,
         zipCode : String,
         country : String,
+        phoneNumber : String
       }
 
       input registerInputFiled{
@@ -96,6 +97,7 @@ module.exports = {
                 const Address = {}
                 Address.data = params.input?.addressLine
                 Address.data.user_ref = user.id
+                Address.data.phoneNumber = params.input.phoneNumber;
                 const ctx = strapi.requestContext.get();
                 ctx.request.header.authorization = `Bearer ${usersJwt}`;
                 await strapi.services["api::address.address"].create(Address);
