@@ -47,6 +47,9 @@
     "zipCode": {
       "type": "string",
       "required": true
+    },
+    "phoneNumber": {
+      "type": "string"
     }
   }
 }

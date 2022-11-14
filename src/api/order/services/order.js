@@ -13,7 +13,7 @@ module.exports = createCoreService('api::order.order', ({ strapi }) => ({
       try {
         let totalPrice = 0;
         const { data } = params;
-        const { ordersItem } = data;
+        const { ordersItem , paymentMethod} = data;
       //   || !data.delivaryAddress
         if (!ordersItem || ordersItem.length == 0 ) {
           const error = new Error()
@@ -86,6 +86,10 @@ module.exports = createCoreService('api::order.order', ({ strapi }) => ({
         data["totalVat"] = totalVat;
         data["totalPrice"] = totalPrice;
         data["user_ref"] = ctx.state.user.id;
+        
+        if(paymentMethod){
+          data["paymentMethod"] = paymentMethod;
+        }
         params.data =  data
         params.populate = '*'
         const response = await super.create(params);
